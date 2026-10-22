@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Latihan Soal Teori SIM C</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-decorations">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="road-line"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- HEADER -->
+        <header class="main-header">
+            <div class="logo-area">
+                <span class="logo-icon">🏍️</span>
+                <div>
+                    <h1>SIM C Master Quiz</h1>
+                    <p class="subtitle">Simulasi & Latihan Ujian Teori SIM C</p>
+                </div>
+            </div>
+            <div class="header-audio-controls">
+                <!-- Mini BGM player capsule with animated equalizer -->
+                <div class="bgm-player-capsule" id="bgm-player-capsule">
+                    <button id="bgm-toggle" class="btn-audio-toggle" title="Putar / Jeda Musik Latar">
+                        <span id="bgm-icon">▶️</span>
+                    </button>
+                    <div class="bgm-track-info">
+                        <div class="equalizer-waves paused" id="equalizer-waves">
+                            <span class="bar bar-1"></span>
+                            <span class="bar bar-2"></span>
+                            <span class="bar bar-3"></span>
+                            <span class="bar bar-4"></span>
+                        </div>
+                        <span class="bgm-title" id="bgm-status-text">Musik Ujian</span>
+                    </div>
+                    <div class="bgm-volume-wrapper">
+                        <span class="vol-icon" id="vol-icon">🔉</span>
+                        <input type="range" id="bgm-volume-slider" min="0" max="100" value="40" title="Volume Musik">
+                    </div>
+                </div>
+
+                <button id="sound-toggle" class="btn-icon" title="Efek Suara (SFX) On/Off">🔔</button>
+            </div>
+        </header>
+
+        <!-- AUDIO ELEMEN RESMI UNTUK BACKSOUND -->
+        <audio id="bgm-audio" loop preload="auto">
+            <source src="backsound.mp3" type="audio/mpeg">
+        </audio>
+
+        <!-- SCREEN: HOME / START -->
+        <section id="screen-home" class="screen active">
+            <div class="hero-card">
+                <div class="badge-tag">25 Soal Lengkap + Pembahasan</div>
+                <h2>Siap Uji Pemahaman Lalu Lintas Anda?</h2>
+                <p>Uji kesiapanmu menghadapi ujian teori SIM C resmi dari Kepolisian. Pahami rambu, marka jalan, dan etika berkendara yang aman!</p>
+
+                <div class="info-grid">
+                    <div class="info-box">
+                        <span class="info-icon">📋</span>
+                        <strong>25 Pertanyaan</strong>
+                        <span>Soal pilihan ganda resmi</span>
+                    </div>
+                    <div class="info-box">
+                        <span class="info-icon">⏱️</span>
+                        <strong>Waktu Fleksibel</strong>
+                        <span>Mode Ujian atau Santai</span>
+                    </div>
+                    <div class="info-box">
+                        <span class="info-icon">🎯</span>
+                        <strong>Target Lulus: 70%</strong>
+                        <span>Minimal 18 jawaban benar</span>
+                    </div>
+                </div>
+
+                <div class="mode-selection">
+                    <h3>Pilih Mode Bermain:</h3>
+                    <div class="mode-cards">
+                        <label class="mode-card">
+                            <input type="radio" name="game-mode" value="practice" checked>
+                            <div class="card-content">
+                                <span class="mode-emoji">💡</span>
+                                <div>
+                                    <h4>Mode Latihan (Santai)</h4>
+                                    <p>Langsung tahu benar/salah & penjelasan di setiap soal tanpa batas waktu.</p>
+                                </div>
+                            </div>
+                        </label>
+                        <label class="mode-card">
+                            <input type="radio" name="game-mode" value="exam">
+                            <div class="card-content">
+                                <span class="mode-emoji">⚡</span>
+                                <div>
+                                    <h4>Mode Ujian (Simulasi Asli)</h4>
+                                    <p>Timer 15 menit, hasil dan ulasan lengkap diberikan di akhir ujian.</p>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="action-row">
+                    <button id="btn-start-quiz" class="btn-primary">
+                        Mulai Latihan Sekarang 🚀
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREEN: QUIZ -->
+        <section id="screen-quiz" class="screen">
+            <!-- TOP BAR -->
+            <div class="quiz-top-bar">
+                <div class="progress-info">
+                    <span id="question-counter">Soal 1 dari 25</span>
+                    <span id="current-score-pill" class="score-pill">Skor: 0</span>
+                </div>
+                <div id="timer-container" class="timer-badge">
+                    <span class="timer-icon">⏳</span>
+                    <span id="timer-display">15:00</span>
+                </div>
+            </div>
+
+            <!-- PROGRESS BAR -->
+            <div class="progress-track">
+                <div id="progress-bar-fill" class="progress-fill"></div>
+            </div>
+
+            <!-- QUESTION CARD -->
+            <div class="question-card">
+                <div class="card-meta">
+                    <span class="category-badge" id="question-category">🚦 Aturan Lalu Lintas</span>
+                    <span class="points-badge">+4 Poin</span>
+                </div>
+                <h3 id="question-text" class="question-title">Teks pertanyaan akan muncul di sini...</h3>
+
+                <!-- OPTIONS CONTAINER -->
+                <div id="options-container" class="options-list">
+                    <!-- Dynamic buttons inserted by JS -->
+                </div>
+
+                <!-- INSTANT FEEDBACK BOX (Mode Latihan) -->
+                <div id="feedback-box" class="feedback-box hidden">
+                    <div class="feedback-header">
+                        <span id="feedback-icon">✅</span>
+                        <strong id="feedback-title">Jawaban Tepat!</strong>
+                    </div>
+                    <p id="feedback-explanation">Penjelasan singkat mengenai aturan rambu terkait.</p>
+                </div>
+
+                <!-- AUTO NEXT COUNTDOWN INDICATOR WITH PAUSE BUTTON -->
+                <div id="auto-advance-bar" class="auto-advance-bar hidden">
+                    <div class="auto-advance-row">
+                        <div class="auto-advance-content">
+                            <span class="pulse-timer" id="pulse-timer-icon">⏱️</span>
+                            <span id="auto-advance-text">Otomatis lanjut ke soal berikutnya dalam <strong id="countdown-number">5</strong> detik...</span>
+                        </div>
+                        <button id="btn-pause-countdown" class="btn-pause-countdown" title="Jeda timer untuk membaca pembahasan">
+                            <span id="pause-btn-icon">⏸️</span>
+                            <span id="pause-btn-text">Jeda Timer</span>
+                        </button>
+                    </div>
+                    <div class="countdown-track">
+                        <div id="countdown-bar" class="countdown-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NAVIGATION BUTTONS -->
+            <div class="quiz-footer">
+                <button id="btn-quit" class="btn-secondary">Keluar</button>
+                <button id="btn-next" class="btn-primary" disabled>Lanjut ➔</button>
+            </div>
+        </section>
+
+        <!-- SCREEN: RESULT -->
+        <section id="screen-result" class="screen">
+            <div class="result-card">
+                <div id="result-status-badge" class="result-badge">LULUS! 🎉</div>
+                
+                <div class="score-circle">
+                    <span id="final-score" class="big-score">92</span>
+                    <span class="score-max">/ 100</span>
+                </div>
+
+                <h2 id="result-title">Selamat! Anda Lulus Ujian Teori SIM C</h2>
+                <p id="result-message" class="result-desc">Pemahaman Anda tentang rambu dan aturan berkendara sudah sangat baik.</p>
+
+                <!-- STATS GRID -->
+                <div class="stats-summary">
+                    <div class="stat-item correct">
+                        <span class="stat-number" id="stat-correct">23</span>
+                        <span class="stat-label">Benar ✅</span>
+                    </div>
+                    <div class="stat-item wrong">
+                        <span class="stat-number" id="stat-wrong">2</span>
+                        <span class="stat-label">Salah ❌</span>
+                    </div>
+                    <div class="stat-item accuracy">
+                        <span class="stat-number" id="stat-accuracy">92%</span>
+                        <span class="stat-label">Akurasi 🎯</span>
+                    </div>
+                    <div class="stat-item time">
+                        <span class="stat-number" id="stat-time">04:15</span>
+                        <span class="stat-label">Waktu ⏱️</span>
+                    </div>
+                </div>
+
+                <!-- ACTIONS -->
+                <div class="result-actions">
+                    <button id="btn-restart" class="btn-primary">Main Lagi 🔄</button>
+                    <button id="btn-toggle-review" class="btn-secondary">Lihat Pembahasan Lengkap 📖</button>
+                </div>
+
+                <!-- REVIEW SECTION (COLLAPSIBLE) -->
+                <div id="review-section" class="review-section hidden">
+                    <h3 class="review-title">Pembahasan 25 Soal & Kunci Jawaban</h3>
+                    <div id="review-list" class="review-container">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
